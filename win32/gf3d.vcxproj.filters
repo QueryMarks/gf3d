@@ -16,6 +16,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{1015cc68-12a4-4e71-8378-4b5199225c13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{f8cdfe52-bba9-498b-98ee-61443cd31c49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -168,13 +171,19 @@
     <ClCompile Include="..\gfc\simple_logger\src\simple_logger.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\entity.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player.c">
+    <ClCompile Include="..\src\gf3d_mesh.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\level.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\model.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -338,13 +347,16 @@
     <ClInclude Include="..\include\gf3d_vqueues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
+    <ClInclude Include="..\include\level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entity.h">
+    <ClInclude Include="..\include\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
+    <ClInclude Include="..\include\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -360,6 +372,9 @@
     </None>
     <None Include="..\shaders\sprite.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\levels\testlevel.level">
+      <Filter>Levels</Filter>
     </None>
   </ItemGroup>
 </Project>

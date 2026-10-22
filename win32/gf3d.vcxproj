@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -22,6 +30,15 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <MSVCPreviewEnabled>
+    </MSVCPreviewEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <MSVCPreviewEnabled />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -29,6 +46,16 @@
     <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <VCToolsVersion>
+    </VCToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <VCToolsVersion />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -36,35 +63,76 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include</IncludePath>
-    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64</LibraryPath>
+    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include</IncludePath>
-    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64</LibraryPath>
+    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\VulkanSDK\1.4.357.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x64;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>
+      </ConformanceMode>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>
+      </ConformanceMode>
+      <CompileAsManaged>false</CompileAsManaged>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,10 +140,36 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode />
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>
+      </ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -84,6 +178,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -129,6 +224,7 @@
     <ClCompile Include="..\src\gf3d_device.c" />
     <ClCompile Include="..\src\gf3d_extensions.c" />
     <ClCompile Include="..\src\gf3d_gltf_parse.c" />
+    <ClCompile Include="..\src\gf3d_mesh.c" />
     <ClCompile Include="..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\src\gf3d_shaders.c" />
@@ -138,8 +234,9 @@
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
-    <ClCompile Include="model.c" />
-    <ClCompile Include="player.c" />
+    <ClCompile Include="..\src\level.c" />
+    <ClCompile Include="..\src\model.c" />
+    <ClCompile Include="..\src\player.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\gfc\include\gfc_actions.h" />
@@ -172,6 +269,7 @@
     <ClInclude Include="..\gfc\simple_json\include\simple_json_types.h" />
     <ClInclude Include="..\gfc\simple_json\include\simple_json_value.h" />
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
+    <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf2d_actor.h" />
     <ClInclude Include="..\include\gf2d_camera.h" />
     <ClInclude Include="..\include\gf2d_font.h" />
@@ -195,11 +293,12 @@
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="model.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="..\include\level.h" />
+    <ClInclude Include="..\include\model.h" />
+    <ClInclude Include="..\include\player.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\levels\testlevel.level" />
     <None Include="..\shaders\model.frag" />
     <None Include="..\shaders\model.vert" />
     <None Include="..\shaders\sprite.frag" />

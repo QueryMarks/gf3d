@@ -7,9 +7,9 @@ typedef struct Entity_S
 {
 	Uint8			_inuse;
 	Model*			model;
-	GFC_Vector3d	position;
-	GFC_Vector3d	rotation;
-	GFC_Vector3d	scale;
+	GFC_Vector3D	position;
+	GFC_Vector3D	rotation;
+	GFC_Vector3D	scale;
 	GFC_Matrix4		mat;
 
 	GFC_Vector3D	velocity;
@@ -20,7 +20,7 @@ typedef struct Entity_S
 	int			(*think)(struct Entity_S* self);
 	int			(*update)(struct Entity_S* self);
 	int			(*draw)(struct Entity_S* self);
-}; Entity;
+} Entity;
 
 
 /**

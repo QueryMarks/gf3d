@@ -51,7 +51,7 @@ Entity* entity_new()
 
 		//BOILERPLATE
 		entity_manager.entityList[i].scale = gfc_vector3d(1, 1, 1);
-		entity_manager.entityList[i].color = GFC_COLOR_WHITE;
+		entity_manager.entityList[i].colorMod = GFC_COLOR_WHITE;
 		return &entity_manager.entityList[i];
 	}
 	return NULL;
@@ -88,11 +88,11 @@ void entity_update(Entity* ent)
 	if ((!ent) || (!ent->_inuse))return;
 	gfc_vector3d_add(ent->position, ent->position, ent->velocity); 
 	//dampening. maybe remove? add a condition on the entity?
-	if (gfc_vector3d_magnitude_squared(self->velocity) > 0.01)
+	if (gfc_vector3d_magnitude_squared(ent->velocity) > 0.01)
 	{
-		gfc_vector3d_scale(self->velocity, self->velocity, 0.8);
+		gfc_vector3d_scale(ent->velocity, ent->velocity, 0.8);
 	}
-	else gfc_vector3d_clear(self->velocity);
+	else gfc_vector3d_clear(ent->velocity);
 }
 
 void entity_system_draw()

@@ -10,6 +10,7 @@
 #include "gfc_matrix.h"
 #include "gfc_primitives.h"
 
+
 #include "gf3d_pipeline.h"
 
 
@@ -53,7 +54,7 @@ typedef struct
 {
     GFC_TextLine        filename;
     Uint32              _refCount;
-    Uint8               _inuse;
+    //Uint8               _inuse; //IS THIS EVEN USED?
     GFC_List           *primitives;
     GFC_Box             bounds;
 }Mesh;

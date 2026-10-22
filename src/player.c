@@ -46,7 +46,7 @@ int player_think(Entity* self)
 	if ((move.x) || (move.y))
 	{
 		gfc_vector3d_normalize(&move);
-		self.velocity = move;
+		self->velocity = move;
 
 	}
 	return 0;

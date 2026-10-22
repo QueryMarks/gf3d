@@ -10,7 +10,7 @@ typedef struct
 	Uint32 model_count;
 	Pipeline* pipe;
 	VkDevice device;
-	Texture* defaultTexture
+	Texture* defaultTexture;
 }ModelManager;
 
 static ModelManager model_manager = { 0 };
@@ -35,7 +35,7 @@ void model_system_init(Uint32 model_count) {
 	model_manager.model_list = (Model*) gfc_allocate_array(sizeof(Model), model_count);
 
 
-	
+	gf3d_mesh_get_attribute_descriptions(&count);
 
 	model_manager.model_count = model_count;
 	model_manager.pipe = gf3d_pipeline_create_from_config(
@@ -180,6 +180,12 @@ Model* model_load(const char* filename)
 	}
 	slog("found the json info for this model");
 
+	data = sj_object_get_value(json, "model");
+	if (!json)
+	{
+		slog("failed to load json model data");
+		return NULL;
+	}
 
 	str = sj_object_get_string(data, "obj");
 	mesh = gf3d_mesh_load_obj(str);
