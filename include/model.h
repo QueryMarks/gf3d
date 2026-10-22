@@ -4,6 +4,8 @@
 
 #include "gf3d_pipeline.h"
 #include "gf3d_mesh.h"
+#include "gfc_color.h"
+
 
 typedef struct
 {

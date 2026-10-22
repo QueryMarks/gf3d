@@ -1,6 +1,9 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
+#include "gfc_vector.h"
+#include "gfc_color.h"
+
 #include "model.h"
 
 typedef struct Entity_S

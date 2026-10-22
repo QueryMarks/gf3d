@@ -22,6 +22,8 @@ static MeshManager mesh_manager = { 0 };
 void gf3d_mesh_primitive_free(MeshPrimitive* prim);
 void gf3d_mesh_delete(Mesh* mesh);
 
+Uint8 gf3d_primitive_buffer_create(MeshPrimitive* prim);
+
 //////done doing that
 
 
@@ -128,7 +130,7 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
 
     prim->objData = objData;
 
-    if (!gf3d_prim_buffer_create(prim))
+    if (!gf3d_primitive_buffer_create(prim))
     {
         gf3d_mesh_delete(mesh);
         gf3d_mesh_primitive_free(prim);

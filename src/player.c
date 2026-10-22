@@ -53,4 +53,9 @@ int player_think(Entity* self)
 
 }
 
+int player_update(Entity* self)
+{
+	return;
+}
+
 /**/

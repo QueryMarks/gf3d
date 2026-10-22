@@ -1,6 +1,8 @@
 #include "simple_logger.h"
 
 #include "entity.h"
+#include "model.h"
+#include "gfc_color.h"
 
 
 typedef struct
@@ -69,7 +71,7 @@ void entity_draw(Entity* ent)
 		ent->position,
 		ent->rotation,
 		ent->scale);
-	model_queue_render(ent->model, ent->mat, ent->colorMod);
+	gf3d_model_queue_render(ent->model, ent->mat, ent->colorMod);
 }
 void entity_think(Entity* ent)
 {

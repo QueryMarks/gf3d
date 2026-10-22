@@ -62,7 +62,10 @@ void model_system_init(Uint32 model_count) {
 Pipeline* model_get_pipeline();
 
 
-void gf3d_model_queue_render(Model* model, GFC_Matrix4 mat, GFC_Color colormod);
+void gf3d_model_queue_render(Model* model, GFC_Matrix4 mat, GFC_Color colormod)
+{
+	return;
+}
 
 
 
@@ -108,7 +111,7 @@ void model_close() {
 }
 
 
-Model* modelNew() {
+Model* model_new() {
 	for (int i = 0; i < model_manager.model_count; i++)
 	{
 		if ((model_manager.model_list[i]._refCount == 0) && (strlen(model_manager.model_list[i].fileName) == 0))
