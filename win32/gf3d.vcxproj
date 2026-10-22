@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\djkehoe\git\gf3d\gfc\simple_logger\include;C:\Users\djkehoe\git\gf3d\gfc\simple_json\include;C:\Users\djkehoe\git\gf3d\gfc\include;C:\Users\djkehoe\git\gf3d\include;C:\Users\djkehoe\git\libs\VulkanSDK\1.2.148.1\Include;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\include;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\include;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\include;C:\Users\djkehoe\git\libs\SDL2-2.0.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\djkehoe\git\libs\VulkanSDK\1.2.148.1\Lib32;C:\Users\djkehoe\git\libs\SDL2_ttf-2.0.14\lib\x86;C:\Users\djkehoe\git\libs\SDL2_mixer-2.0.2\lib\x86;C:\Users\djkehoe\git\libs\SDL2_image-2.0.3\lib\x86;C:\Users\djkehoe\git\libs\SDL2-2.0.8\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_logger\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\simple_json\include;C:\Users\HP\Documents\3dgame\repo\gf3d\gfc\include;C:\Users\HP\Documents\3dgame\repo\gf3d\include;C:\VulkanSDK\1.4.357.0\Include;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\include;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\include;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\include;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.4.357.0\Lib;C:\Users\HP\Documents\3dgame\SDL2_ttf-devel-2.24.0-VC\SDL2_ttf-2.24.0\lib\x86;C:\Users\HP\Documents\3dgame\SDL2_mixer-devel-2.8.2-VC\SDL2_mixer-2.8.2\lib\x86;C:\Users\HP\Documents\3dgame\SDL2_image-devel-2.8.10-VC\SDL2_image-2.8.10\lib\x86;C:\Users\HP\Documents\3dgame\SDL2-devel-2.32.4-VC\SDL2-2.32.4\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>..</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,7 +132,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>vulkan-1.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sdl2_ttf.lib;sdl2_mixer.lib;sdl2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -31,6 +31,8 @@
 
 #include "gf3d_vgraphics.h"
 
+#include "model.h"
+
 
 typedef struct
 {
@@ -200,7 +202,7 @@ void gf3d_vgraphics_init(const char *config)
 
     gf3d_vgraphics.enable_2d = 1;
     gf2d_sprite_manager_init(1024);
-    renderPipe = gf2d_sprite_get_pipeline();
+    renderPipe = model_get_pipeline();
 
     gf3d_swapchain_create_depth_image();
     gf3d_swapchain_setup_frame_buffers(renderPipe);

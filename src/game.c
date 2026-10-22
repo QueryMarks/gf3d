@@ -55,19 +55,26 @@ int main(int argc,char *argv[])
     gfc_input_init("config/input.cfg");
     gfc_config_def_init();
     gfc_action_init(1024);
+    slog("gfc initiated");
     //gf3d init
     gf3d_vgraphics_init("config/setup.cfg");
+    slog("vgraphics initiated");
     gf2d_font_init("config/font.cfg");
+    slog("font initiated");
     gf2d_actor_init(1000);
+    slog("actor initiated");
 
     gf3d_mesh_init(256);
+    slog("mesh initiated");
     model_system_init(256);
+    slog("gf3d initiated");
     //init audio here too please
     
     //game init
 
     gfc_matrix4_identity(mat);
     view = gf3d_vgraphics_get_view_matrix();
+    slog("got gf3d matrix");
 
     srand(SDL_GetTicks());
     slog_sync();
@@ -85,15 +92,17 @@ int main(int argc,char *argv[])
         //camera updaes
         gf3d_vgraphics_render_start();
                 //2D draws
-                gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
-
+                //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
                 gfc_matrix4_view(*view, offset, gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
 
                 gf3d_model_queue_render(agumon, mat, GFC_COLOR_WHITE);
+                slog("this is model queue render");
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
+                slog("this is just before graphics end");
         gf3d_vgraphics_render_end();
+        slog("this is graphics render end");
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
     }    

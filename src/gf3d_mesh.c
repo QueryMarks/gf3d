@@ -88,20 +88,23 @@ Mesh* gf3d_mesh_get_by_filename(const char* filename)
 }
 
 Mesh* gf3d_mesh_load_obj(const char* filename) {
-    const char* str = NULL;
+    const char* str;
     Mesh* mesh;
     MeshPrimitive* prim;
     ObjData* objData;
 
-
+    slog("about to get mesh by filename");
     mesh = gf3d_mesh_get_by_filename(filename);
+    slog("checked for mesh by filename");
     if (mesh)
     {
         //mesh already loaded
+        slog("mesh already loaded");
         mesh->_refCount++;
         return mesh;
     }
     mesh = gf3d_mesh_new();
+    slog("created a new mesh");
     if (!mesh)
     {
         slog("no mesh");
@@ -109,15 +112,16 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
     }
 
     prim = gf3d_mesh_primitive_new();
+    slog("created a new prim");
 
     if (!prim)
     {
         slog("failed to load mesh primitive");
         return NULL;
     }
-
-
+    slog("going to load obj");
     objData = gf3d_obj_load_from_file(filename);
+    slog("loaded obj from file");
     if (!objData)
     {
         gf3d_mesh_delete(mesh);
