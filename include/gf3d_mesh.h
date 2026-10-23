@@ -36,7 +36,7 @@ typedef struct
 
 typedef struct
 {
-    Uint16  verts[3];
+    Uint32  verts[3];
 }Face;
 
 typedef struct
@@ -44,7 +44,7 @@ typedef struct
     Uint32          vertexCount;
     VkBuffer        vertexBuffer;
     VkDeviceMemory  vertexBufferMemory;
-    Uint32          faceCount;
+    Uint32         faceCount;
     VkBuffer        faceBuffer;
     VkDeviceMemory  faceBufferMemory;
     ObjData        *objData;
@@ -54,7 +54,7 @@ typedef struct
 {
     GFC_TextLine        filename;
     Uint32              _refCount;
-    //Uint8               _inuse; //IS THIS EVEN USED?
+    Uint8               _inuse; //IS THIS EVEN USED?
     GFC_List           *primitives;
     GFC_Box             bounds;
 }Mesh;

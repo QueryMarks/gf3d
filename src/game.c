@@ -57,6 +57,7 @@ int main(int argc,char *argv[])
     gfc_action_init(1024);
     slog("gfc initiated");
     //gf3d init
+
     gf3d_vgraphics_init("config/setup.cfg");
     slog("vgraphics initiated");
     gf2d_font_init("config/font.cfg");
@@ -64,9 +65,6 @@ int main(int argc,char *argv[])
     gf2d_actor_init(1000);
     slog("actor initiated");
 
-    gf3d_mesh_init(256);
-    slog("mesh initiated");
-    model_system_init(256);
     slog("gf3d initiated");
     //init audio here too please
     
@@ -82,27 +80,28 @@ int main(int argc,char *argv[])
     gf2d_mouse_load("actors/mouse.actor");
 
     agumon = model_load("models/dino/dino.model");
+    slog("game loop about to start");
 
     // main game loop    
     while(!_done)
     {
+
         gfc_input_update();
         gf2d_mouse_update();
         gf2d_font_update();
         //camera updaes
+        //slog("right before graphics render start");
         gf3d_vgraphics_render_start();
+        //slog("after graphics render start");
                 //2D draws
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
-                gfc_matrix4_view(*view, offset, gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
+                gfc_matrix4_view(*view, gfc_vector3d(0,-15,0), gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
 
                 gf3d_model_queue_render(agumon, mat, GFC_COLOR_WHITE);
-                slog("this is model queue render");
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
-                slog("this is just before graphics end");
         gf3d_vgraphics_render_end();
-        slog("this is graphics render end");
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
     }    

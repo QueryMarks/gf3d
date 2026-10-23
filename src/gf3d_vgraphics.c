@@ -201,6 +201,10 @@ void gf3d_vgraphics_init(const char *config)
     gf3d_vgraphics.graphicsCommandPool = gf3d_command_graphics_pool_setup(gf3d_swapchain_get_swap_image_count());
 
     gf3d_vgraphics.enable_2d = 1;
+    //gf3d_mesh_init(256);
+    slog("ABOUT TO INITIALIZE MODEL");
+    model_system_init(1024);
+    slog("model system initiated");
     gf2d_sprite_manager_init(1024);
     renderPipe = model_get_pipeline();
 
@@ -484,7 +488,9 @@ Uint32 gf3d_vgraphics_render_begin()
 void gf3d_vgraphics_render_start()
 {
     gf3d_vgraphics.bufferFrame = gf3d_vgraphics_render_begin();
+    //slog("after setting bufferframe");
     gf3d_pipeline_reset_all_pipes();
+    //slog("after resetting all pipes");
 }
 
 Uint32  gf3d_vgraphics_get_current_buffer_frame()

@@ -185,7 +185,11 @@ void gf3d_pipeline_queue_render(
     Texture *texture)
 {
     PipelineDrawCall *drawCall;
-    if (!pipe)return;
+    if (!pipe)
+    {
+        slog("there is NO PIPE!!!");
+        return;
+    }
     drawCall = gf3d_pipeline_draw_call_new(pipe);
     if (!drawCall)
     {
@@ -198,6 +202,7 @@ void gf3d_pipeline_queue_render(
     drawCall->indexBuffer = indexBuffer;
     drawCall->texture = texture;
     memcpy(drawCall->uboData,uboData,pipe->uboDataSize);
+    slog("drawcall succeeded supposedly for vertex count %i", vertexCount);
 }
 
 void gf3_pipeline_update_ubos(Pipeline *pipe)
@@ -731,6 +736,7 @@ void gf3d_pipeline_reset_all_pipes()
 {
     int i;
     Uint32 bufferFrame = gf3d_vgraphics_get_current_buffer_frame();
+    //slog("bufferFrame is: %i", bufferFrame);
     for (i = 0; i < gf3d_pipeline.maxPipelines;i++)
     {
         if (!gf3d_pipeline.pipelineList[i].inUse)continue;

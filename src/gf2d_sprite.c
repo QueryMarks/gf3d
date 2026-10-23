@@ -39,7 +39,7 @@ typedef struct
 
 typedef struct
 {
-    Uint16  verts[3];
+    Uint32  verts[3];
 }SpriteFace;
 
 typedef struct
@@ -148,7 +148,7 @@ void gf2d_sprite_manager_init(Uint32 max_sprites)
         gf2d_sprite_get_attribute_descriptions(NULL),
         count,
         sizeof(SpriteUBO),
-        VK_INDEX_TYPE_UINT16
+        VK_INDEX_TYPE_UINT32
     );     
     
     if(__DEBUG)slog("sprite manager initiliazed");

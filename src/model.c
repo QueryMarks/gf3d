@@ -33,22 +33,23 @@ void model_system_init(Uint32 model_count) {
 
 
 	Uint32 count;
-	model_manager.chainLength = gf3d_swapchain_get_chain_length();
+	//model_manager.chainLength = gf3d_swapchain_get_chain_length();
 	model_manager.model_list = (Model*) gfc_allocate_array(sizeof(Model), model_count);
 
-
+	gf3d_mesh_init(1024);
 	gf3d_mesh_get_attribute_descriptions(&count);
 	slog("got attribute descriptions");
 
 	model_manager.model_count = model_count;
+	slog("about to set pipe from config");
 	model_manager.pipe = gf3d_pipeline_create_from_config(
 		gf3d_vgraphics_get_default_logical_device(),
 		"config/model_pipeline.cfg",
 		gf3d_vgraphics_get_view_extent(),
 		model_count,
 		gf3d_mesh_get_bind_description(),
-		gf3d_mesh_get_attribute_descriptions(0),
-		3, //ask about this one
+		gf3d_mesh_get_attribute_descriptions(NULL),
+		count, //ask about this one
 		sizeof(ModelUBO),
 		VK_INDEX_TYPE_UINT32
 	);
@@ -58,18 +59,47 @@ void model_system_init(Uint32 model_count) {
 	model_manager.device = gf3d_vgraphics_get_default_logical_device();
 	model_manager.defaultTexture = gf3d_texture_load("images/default.png");
 
-	gf3d_mesh_init(model_count);
+
 
 	slog("model system initiated");
 
 }
 
-Pipeline* model_get_pipeline();
+Pipeline* model_get_pipeline()
+{
+	return model_manager.pipe;
+}
+
+ModelUBO model_get_ubo(GFC_Matrix4 modelMat, GFC_Color colormod)
+{
+	ModelUBO ubo = { 0 };
+	GFC_Matrix4 view;
+	GFC_Matrix4 projection;
 
 
+	memcpy(ubo.model, modelMat, sizeof(GFC_Matrix4));
+
+	gf3d_vgraphics_get_view(&view);
+
+	memcpy(ubo.view, view, sizeof(GFC_Matrix4));
+
+	gf3d_vgraphics_get_projection_matrix(&projection);
+	memcpy(ubo.proj, projection, sizeof(GFC_Matrix4));
+	ubo.color = gfc_color_to_vector4f(colormod);
+
+
+	return ubo;
+
+}
 void gf3d_model_queue_render(Model* model, GFC_Matrix4 mat, GFC_Color colormod)
 {
-	return;
+	if (!model)
+	{
+		slog("model missing from model queue render");
+		return;
+	}
+	ModelUBO ubo = model_get_ubo(mat, colormod);
+	gf3d_mesh_queue_render(model->mesh, model_manager.pipe, &ubo, model->texture);
 }
 
 
@@ -220,44 +250,39 @@ Model* model_load(const char* filename)
 			slog("failed to load texture");
 			texture = model_manager.defaultTexture;
 		}
+		else
+		{
+			slog("texture was loaded yahoooooo");
+		}
 	}
 	else
 	{
+		slog("failed to find a texture string. using default texture");
 		texture = model_manager.defaultTexture;
+		
 	}
 
 	model = model_new();
+	if (!model)
+	{
+		slog("model was not loaded correctly, memleaks");
+	}
 	model->mesh = mesh;
+	if (!model->mesh)
+	{
+		slog("mesh was not pointered correctly");
+	}
 	model->texture = texture;
+	if (!model->texture)
+	{
+		slog("texture was not pointered correctly");
+	}
 	gfc_line_cpy(model->fileName, filename);
-	slog("returning model");
+	slog("returning model:");
+	slog(filename);
 	return model;
 }
 
 
-ModelUBO model_get_ubo(GFC_Matrix4 modelMat, GFC_Color colormod)
-{
-	ModelUBO ubo = { 0 };
-	GFC_Matrix4 view;
-	GFC_Matrix4 projection;
 
 
-	memcpy(ubo.model, modelMat, sizeof(GFC_Matrix4));
-
-	gf3d_vgraphics_get_view(&view);
-
-	memcpy(ubo.view, view, sizeof(GFC_Matrix4));
-
-	gf3d_vgraphics_get_projection_matrix(&projection);
-	memcpy(ubo.proj, projection, sizeof(GFC_Matrix4));
-	ubo.color = gfc_color_to_vector4f(colormod);
-
-
-	return ubo;
-
-}
-
-Pipeline* model_get_pipeline()
-{
-	return model_manager.pipe;
-}
