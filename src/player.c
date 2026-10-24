@@ -1,7 +1,7 @@
 #include "simple_logger.h"
 #include "GFC_Vector.h"
 #include "player.h"
-
+#include "gfc_input.h"
 
 
 int player_think(Entity* self);
@@ -24,10 +24,12 @@ Entity* player_spawn(GFC_Vector3D position)
 
 int player_think(Entity* self)
 {
+	//slog("playor thinkin");
 	GFC_Vector3D move = { 0 };
 	if (!self)return 0;
 	if (gfc_input_command_down("item_up"))
 	{
+		//slog("moving up");
 		move.y = 1;
 	}
 	if (gfc_input_command_down("item_down"))
@@ -43,8 +45,9 @@ int player_think(Entity* self)
 		move.x = 1;
 	}
 
-	if ((move.x) || (move.y))
+	if ((move.x!=0) || (move.y!=0))
 	{
+		slog("setting velocity");
 		gfc_vector3d_normalize(&move);
 		self->velocity = move;
 
@@ -55,7 +58,13 @@ int player_think(Entity* self)
 
 int player_update(Entity* self)
 {
-	return;
+	gfc_vector3d_add(self->position, self->position, self->velocity);
+	//dampening
+	if (gfc_vector3d_magnitude_squared(self->velocity) > 0.01)
+	{
+		gfc_vector3d_scale(self->velocity, self->velocity, 0.8);
+	}
+	else gfc_vector3d_clear(self->velocity);
 }
 
 /**/

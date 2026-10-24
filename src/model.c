@@ -228,12 +228,12 @@ Model* model_load(const char* filename)
 		slog("failed to load json model data");
 		return NULL;
 	}
-	slog("found the json data info for this model");
+	//slog("found the json data info for this model");
 	str = sj_object_get_string(data, "obj");
 	mesh = gf3d_mesh_load_obj(str);
 
 
-	slog("succeeded at gf3d_mesh_load_obj");
+	//slog("succeeded at gf3d_mesh_load_obj");
 	if (!mesh)
 	{
 		slog("failed to load mesh");
@@ -278,8 +278,8 @@ Model* model_load(const char* filename)
 		slog("texture was not pointered correctly");
 	}
 	gfc_line_cpy(model->fileName, filename);
-	slog("returning model:");
-	slog(filename);
+	//slog("returning model:");
+	//slog(filename);
 	return model;
 }
 

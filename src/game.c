@@ -23,6 +23,8 @@
 #include "model.h"
 #include "gf3d_mesh.h"
 
+#include "entity.h"
+#include "player.h"
 extern int __DEBUG;
 
 static int _done = 0;
@@ -43,6 +45,7 @@ int main(int argc,char *argv[])
     //local variables
     Sprite *bg;
     Model* agumon;
+    Entity* agumon_ent;
 
     GFC_Matrix4 mat;
     GFC_Matrix4* view;
@@ -64,6 +67,7 @@ int main(int argc,char *argv[])
     slog("font initiated");
     gf2d_actor_init(1000);
     slog("actor initiated");
+    entity_init(256);
 
     slog("gf3d initiated");
     //init audio here too please
@@ -79,7 +83,9 @@ int main(int argc,char *argv[])
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
 
-    agumon = model_load("models/dino/dino.model");
+    agumon_ent = player_spawn(gfc_vector3d(0,0,0));
+    //agumon_ent->model = model_load("models/dino/dino.model");
+    //agumon_ent->rotation.z = 90;
     slog("game loop about to start");
 
     // main game loop    
@@ -97,8 +103,10 @@ int main(int argc,char *argv[])
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
                 gfc_matrix4_view(*view, gfc_vector3d(0,-15,0), gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
-
-                gf3d_model_queue_render(agumon, mat, GFC_COLOR_WHITE);
+                
+                entity_system_think();
+                entity_system_update();
+                entity_system_draw();
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
         gf3d_vgraphics_render_end();

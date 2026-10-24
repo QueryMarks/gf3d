@@ -14,15 +14,23 @@ typedef struct Entity_S
 	GFC_Vector3D	rotation;
 	GFC_Vector3D	scale;
 	GFC_Matrix4		mat;
-
+	Uint8 removeme;
+	Uint8 solid; //0 if not solid, 1 if solid
 	GFC_Vector3D	velocity;
 	GFC_Color		colorMod;
+
+	float health;
 
 
 
 	int			(*think)(struct Entity_S* self);
 	int			(*update)(struct Entity_S* self);
 	int			(*draw)(struct Entity_S* self);
+
+	void* data;
+	void*collider;
+
+	const char* entity_type;
 } Entity;
 
 

@@ -202,7 +202,7 @@ void gf3d_pipeline_queue_render(
     drawCall->indexBuffer = indexBuffer;
     drawCall->texture = texture;
     memcpy(drawCall->uboData,uboData,pipe->uboDataSize);
-    slog("drawcall succeeded supposedly for vertex count %i", vertexCount);
+    //slog("drawcall succeeded supposedly for vertex count %i", vertexCount);
 }
 
 void gf3_pipeline_update_ubos(Pipeline *pipe)

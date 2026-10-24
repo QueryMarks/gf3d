@@ -338,7 +338,7 @@ Uint8 gf3d_primitive_buffer_create(MeshPrimitive* prim) {
     vkFreeMemory(device, stagingBufferMemory, NULL);
 
     prim->faceCount = prim->objData->face_count;
-    slog("prim's facecount is %i, prim's objdata face_count is %i", prim->faceCount, prim->objData->face_count);
+    //slog("prim's facecount is %i, prim's objdata face_count is %i", prim->faceCount, prim->objData->face_count);
     prim->vertexCount = prim->objData->face_vert_count;
 
     return 1;
@@ -426,8 +426,8 @@ void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* 
         }
         //slog("pipeline queue render time");
         //if (mesh->filename) slog("queueing mesh %s", mesh->filename);
-        slog("vertex count is %i", prim->objData->face_vert_count);
-        slog("face count is %i", prim->objData->face_count);
+        //slog("vertex count is %i", prim->objData->face_vert_count);
+        //slog("face count is %i", prim->objData->face_count);
         gf3d_pipeline_queue_render(pipe, prim->vertexBuffer, prim->vertexCount, prim->faceBuffer, uboData, texture);
     }
 }
