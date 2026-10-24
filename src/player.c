@@ -50,6 +50,8 @@ int player_think(Entity* self)
 		slog("setting velocity");
 		gfc_vector3d_normalize(&move);
 		self->velocity = move;
+		//ROTATION
+		self->rotation.z = atan2(move.x, -move.y);//(2*M_PI)*360;
 
 	}
 	return 0;
