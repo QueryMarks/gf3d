@@ -174,6 +174,7 @@
     <ClInclude Include="..\gfc\simple_json\include\simple_json_string.h" />
     <ClInclude Include="..\gfc\simple_json\include\simple_json_value.h" />
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
+    <ClInclude Include="..\include\element.h" />
     <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf2d_actor.h" />
     <ClInclude Include="..\include\gf2d_camera.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\include\gf3d_vqueues.h" />
     <ClInclude Include="..\include\model.h" />
     <ClInclude Include="..\include\player.h" />
+    <ClInclude Include="..\include\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -231,6 +233,7 @@
     <ClCompile Include="..\gfc\src\gfc_types.c" />
     <ClCompile Include="..\gfc\src\gfc_vector.c" />
     <ClCompile Include="..\gfc\src\miniz.c" />
+    <ClCompile Include="..\src\element.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf2d_actor.c" />
@@ -257,6 +260,7 @@
     <ClCompile Include="..\src\gf3d_vqueues.c" />
     <ClCompile Include="..\src\model.c" />
     <ClCompile Include="..\src\player.c" />
+    <ClCompile Include="..\src\window.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

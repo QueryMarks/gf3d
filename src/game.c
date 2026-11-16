@@ -23,8 +23,12 @@
 #include "model.h"
 #include "gf3d_mesh.h"
 
+#include "window.h"
+
 #include "entity.h"
+#include "element.h"
 #include "player.h"
+
 extern int __DEBUG;
 
 static int _done = 0;
@@ -82,23 +86,31 @@ int main(int argc,char *argv[])
     slog_sync();
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
+    window_manager_init(128);
 
     agumon_ent = player_spawn(gfc_vector3d(0,0,0));
     //agumon_ent->model = model_load("models/dino/dino.model");
     //agumon_ent->rotation.z = 90;
-    slog("game loop about to start");
+    
 
+    slog("making a new awesome window");
+    Window *window = window_new();
+    Element* window_text = text_new(window, gfc_vector2d(0, 0), gfc_vector2d(500, 300), "text");
+    
+    slog("game loop about to start");
+    
     // main game loop    
     while(!_done)
     {
-
+        slog("we are in game loop");
         gfc_input_update();
         gf2d_mouse_update();
+        slog("just before font update...?");
         gf2d_font_update();
         //camera updaes
-        //slog("right before graphics render start");
+        slog("right before graphics render start");
         gf3d_vgraphics_render_start();
-        //slog("after graphics render start");
+        slog("after graphics render start");
                 //2D draws
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
@@ -108,8 +120,20 @@ int main(int argc,char *argv[])
                 entity_system_update();
                 entity_system_draw();
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
-                gf2d_mouse_draw();
+                slog("at window stuff");
+                window_manager_think_all();
+                slog("after window think");
+                window_manager_update_all();
+                slog("after window update");
+                window_manager_draw_all();
+                slog("after window draw");
+
+
+                //gf2d_font_draw_line_tag("SO COOL", FT_H1, GFC_COLOR_WHITE, gfc_vector2d(10, 200));
         gf3d_vgraphics_render_end();
+
+
+        gf2d_mouse_draw();
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
     }    

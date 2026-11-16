@@ -150,6 +150,12 @@
     <ClInclude Include="..\gfc\include\gfc_color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -312,6 +318,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\gfc\src\miniz.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\element.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
