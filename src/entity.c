@@ -123,7 +123,7 @@ void entity_system_draw()
 {
 	int i;
 	for (i = 0; i < entity_manager.maxEnts; i++) {
-		if (!entity_manager.entityList[i]._inuse)continue;
+		if (!entity_manager.entityList[i]._inuse || !entity_manager.entityList[i].model)continue;
 		entity_draw(&entity_manager.entityList[i]);
 	}
 }

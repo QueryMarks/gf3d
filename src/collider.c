@@ -62,9 +62,19 @@ void collider_manager_close() {
 	memset(&colliderManagerStatic, 0, sizeof(ColliderManager));
 }
 
+Uint8 gfc_box_overlap_excl(GFC_Box a, GFC_Box b) {
+	if ((a.x >= b.x + b.w) || (b.x >= a.x + a.w) ||
+		(a.y >= b.y + b.h) || (b.y >= a.y + a.h) ||
+		(a.z >= b.z + b.d) || (b.z >= a.z + a.d))
+	{
+		return 0;
+	}
+	return 1;
+}
+
 Uint8 checkCollision(struct Collider_S self, struct Collider_S other) {
 
-	Bool result = gfc_box_overlap(self.box, other.box); //surely it can't be this easy. surely it can't be replace rect with box. but how beautiful if it is
+	Bool result = gfc_box_overlap_excl(self.box, other.box); //surely it can't be this easy. surely it can't be replace rect with box. but how beautiful if it is
 	return result;
 }
 
@@ -107,13 +117,16 @@ void collider_manager_check_collisions() {
 	}
 }
 
+
+
 //Returns a pointer to the first overlapping collider in the list if the given rect would intersect with a static collider. Returns an empty box if no collider would
 //AWESOME NOTE: may need to commandeer gfc_box_overlap as last semester to get an exclusive version instead of inclusive. see collider.c in 2dgame, ok? you did this before
 GFC_Box collider_manager_check_static_collisions(GFC_Box box) {
 	//Collider *collider = collider_new(rect, true, NULL);
 	for (int i = 0; i < colliderManagerStatic.colliderMax; i++) {
 		if (colliderManagerStatic.colliderList[i]._inuse != 1)continue;
-		if (gfc_box_overlap(box, colliderManagerStatic.colliderList[i].box)) {
+		if (gfc_box_overlap_excl(box, colliderManagerStatic.colliderList[i].box)) {
+			slog("collided with static box");
 			return colliderManagerStatic.colliderList[i].box;
 		}
 	}
@@ -122,12 +135,13 @@ GFC_Box collider_manager_check_static_collisions(GFC_Box box) {
 
 //Returns a pointer to the first overlapping collider in the list if the given rect would intersect with a dynamic (but solid) collider. Returns an empty box if no collider would
 //second hearse same as the first
-GFC_Box collider_manager_check_dynamic_collisions(GFC_Box box) {
+GFC_Box collider_manager_check_solid_collisions(GFC_Box box) {
 	//Collider *collider = collider_new(rect, true, NULL);
 	for (int i = 0; i < colliderManagerDynamic.colliderMax; i++) {
 		if (colliderManagerDynamic.colliderList[i]._inuse != 1)continue;
 		if (colliderManagerDynamic.colliderList[i].entity->solid != 1)continue;
-		if (gfc_box_overlap(box, colliderManagerDynamic.colliderList[i].box)) {
+		if (gfc_box_overlap_excl(box, colliderManagerDynamic.colliderList[i].box)) {
+			slog("collided with solid box");
 			return colliderManagerDynamic.colliderList[i].box;
 		}
 	}
@@ -165,4 +179,13 @@ Collider* collider_new(GFC_Box box, Bool isDynamic, Entity* entity) {
 
 void collider_manager_draw_all() {
 	//if i can find a quick and dirty way to draw boxes, put it here.
+}
+
+GFC_Vector3D box_get_center(GFC_Box my_box)
+{
+	GFC_Vector3D my_center = gfc_vector3d(
+		my_box.x + 0.5 * my_box.w,
+		my_box.y + 0.5 * my_box.h,
+		my_box.z + 0.5 * my_box.d);
+	return my_center;
 }

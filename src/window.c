@@ -84,7 +84,7 @@ Window* window_new() {
 void window_draw(Window* self) {
 	if (!self)return;
 	if (self->hidden == 0) {
-		slog("drawing window??? %s", self->sprite->filename);
+		//slog("drawing window??? %s", self->sprite->filename);
 		gf2d_sprite_draw_image(self->sprite, self->position);
 		//slog("drew window sprite at pos %f, %f", self->position.x, self->position.y);
 		if (self->elements != NULL) {

@@ -23,7 +23,7 @@ typedef struct Collider_S {
 Collider* collider_new(GFC_Box box, Bool isDynamic, Entity* entity);
 
 
-void collider_manager_init(Uint32 max, Bool isDynamic);
+void collider_manager_init(Uint32 max);
 void collider_manager_close();
 void collider_manager_draw_all();
 void collider_free(Collider* self);
@@ -40,5 +40,7 @@ enum TEAM
 GFC_Box collider_manager_check_static_collisions(GFC_Box box);
 GFC_Box collider_manager_check_solid_collisions(GFC_Box box);
 
+
+GFC_Vector3D box_get_center(GFC_Box my_box);
 
 #endif

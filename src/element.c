@@ -171,7 +171,7 @@ void element_draw(Element* self) {
 	if (self->elementType == ET_TEXT)
 	{
 		//slog("drawing text");
-		slog(self->text);
+		//slog(self->text);
 		//slog("drawpos is %f, %f", drawpos.x, drawpos.y);
 		gf2d_font_draw_line_tag(self->text, FT_H1, GFC_COLOR_RED, drawpos);
 		gf2d_font_draw_line_tag(self->text, FT_H1, GFC_COLOR_RED, gfc_vector2d(drawpos.x+100, drawpos.y+200));

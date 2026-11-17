@@ -28,6 +28,7 @@
 #include "entity.h"
 #include "element.h"
 #include "player.h"
+#include "collider.h"
 
 extern int __DEBUG;
 
@@ -73,6 +74,8 @@ int main(int argc,char *argv[])
     slog("actor initiated");
     entity_init(256);
 
+    collider_manager_init(1024);
+
     slog("gf3d initiated");
     //init audio here too please
     
@@ -92,6 +95,13 @@ int main(int argc,char *argv[])
     //agumon_ent->model = model_load("models/dino/dino.model");
     //agumon_ent->rotation.z = 90;
     
+    Entity* test_ground_ent = entity_new();
+    test_ground_ent->position = gfc_vector3d(-100, -100, -20);
+    test_ground_ent->solid = 1;
+    GFC_Box ground_box = gfc_box(-100, -100, -20, 200, 200, 5);
+    Collider* ground_collider = collider_new(ground_box, false, test_ground_ent);
+    test_ground_ent->collider = ground_collider;
+
 
     slog("making a new awesome window");
     Window *window = window_new();
@@ -102,26 +112,26 @@ int main(int argc,char *argv[])
     // main game loop    
     while(!_done)
     {
-        slog("we are in game loop");
+        //slog("we are in game loop");
         gfc_input_update();
         gf2d_mouse_update();
-        slog("just before font update...?");
+        //slog("just before font update...?");
         gf2d_font_update();
         //camera updaes
-        slog("right before graphics render start");
+        //slog("right before graphics render start");
         gf3d_vgraphics_render_start();
-        slog("after graphics render start");
+        //slog("after graphics render start");
                 //2D draws
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
                 gfc_matrix4_view(*view, gfc_vector3d(0,-15,0), gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
-                slog("at window stuff");
+                //slog("at window stuff");
                 window_manager_think_all();
-                slog("after window think");
+                //slog("after window think");
                 window_manager_update_all();
-                slog("after window update");
+                //slog("after window update");
                 window_manager_draw_all();
-                slog("after window draw");
+                //slog("after window draw");
                 entity_system_think();
                 entity_system_update();
                 entity_system_draw();
