@@ -3,9 +3,12 @@
 #include "player.h"
 #include "gfc_input.h"
 
+#include "collider.h"
+
 
 int player_think(Entity* self);
 int player_update(Entity* self);
+int player_collide(Entity* self, void* collider);
 
 Entity* player_spawn(GFC_Vector3D position)
 {
@@ -16,6 +19,13 @@ Entity* player_spawn(GFC_Vector3D position)
 	self->position = position;
 	self->think = player_think;
 	self->update = player_update;
+
+
+	//collider setup
+	GFC_Box box = gfc_box(position.x, position.y, position.z,1,1,1);
+	self->collider = collider_new(box, true, self);
+
+	self->collide = player_collide;
 
 
 	return self;
@@ -47,13 +57,22 @@ int player_think(Entity* self)
 
 	if ((move.x!=0) || (move.y!=0))
 	{
-		slog("setting velocity");
+		//slog("setting velocity");
 		gfc_vector3d_normalize(&move);
 		self->velocity = move;
 		//ROTATION
 		self->rotation.z = atan2(move.x, -move.y);//(2*M_PI)*360;
 
 	}
+	int grounded = 1;
+	//gravity
+	if (grounded == 1) //
+	{
+		slog("my velocity is %f", self->velocity.z);
+		self->velocity.z -= 0.03f;
+		slog("NOW my velocity is %f", self->velocity.z);
+	}
+	
 	return 0;
 
 }
@@ -62,11 +81,11 @@ int player_update(Entity* self)
 {
 	gfc_vector3d_add(self->position, self->position, self->velocity);
 	//dampening
-	if (gfc_vector3d_magnitude_squared(self->velocity) > 0.01)
+	/*if (gfc_vector3d_magnitude_squared(self->velocity) > 0.01f)
 	{
-		gfc_vector3d_scale(self->velocity, self->velocity, 0.8);
+		gfc_vector3d_scale(self->velocity, self->velocity, 0.8f);
 	}
-	else gfc_vector3d_clear(self->velocity);
+	else gfc_vector3d_clear(self->velocity);*/
 }
 
 /**/

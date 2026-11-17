@@ -100,8 +100,6 @@ void window_draw(Window* self) {
 	}
 
 	//slog("about to draw in window_draw");
-
-
 }
 
 void window_manager_draw_all() {

@@ -115,11 +115,6 @@ int main(int argc,char *argv[])
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
 
                 gfc_matrix4_view(*view, gfc_vector3d(0,-15,0), gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
-                
-                entity_system_think();
-                entity_system_update();
-                entity_system_draw();
-                gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 slog("at window stuff");
                 window_manager_think_all();
                 slog("after window think");
@@ -127,7 +122,12 @@ int main(int argc,char *argv[])
                 slog("after window update");
                 window_manager_draw_all();
                 slog("after window draw");
-
+                entity_system_think();
+                entity_system_update();
+                entity_system_draw();
+                gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
+                
+                
 
                 //gf2d_font_draw_line_tag("SO COOL", FT_H1, GFC_COLOR_WHITE, gfc_vector2d(10, 200));
         gf3d_vgraphics_render_end();

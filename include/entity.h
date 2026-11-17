@@ -26,6 +26,8 @@ typedef struct Entity_S
 	int			(*think)(struct Entity_S* self);
 	int			(*update)(struct Entity_S* self);
 	int			(*draw)(struct Entity_S* self);
+	int			(*collide)(struct Entity_S* self, void* collider);
+	int			(*postupdate)(struct Entity_S* self);//used for like freeing the entity so it isn't removed halfway through a collider check for example
 
 	void* data;
 	void*collider;
