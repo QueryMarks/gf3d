@@ -12,12 +12,12 @@ typedef struct
 {
     Uint8                   inuse;
     Uint32                  index;          //which index in the UBO are we
-    VkDescriptorSet        *descriptorSet;  //pointer to the descriptorSet we will use for this draw call
+    VkDescriptorSet* descriptorSet;  //pointer to the descriptorSet we will use for this draw call
     VkBuffer                vertexBuffer;
     Uint32                  vertexCount;
     VkBuffer                indexBuffer;
-    void                   *uboData;        //pointer to corresponding memory in the pipeline uboData
-    Texture                *texture;        //optional!!
+    void* uboData;        //pointer to corresponding memory in the pipeline uboData
+    Texture* texture;        //optional!!
 }PipelineDrawCall;
 
 typedef struct
@@ -27,28 +27,28 @@ typedef struct
     VkPipeline              pipeline;               /**<pipeline handle*/
     VkRenderPass            renderPass;
     VkPipelineLayout        pipelineLayout;
-    char                   *vertShader;             /**<the shader loaded from disk*/
+    char* vertShader;             /**<the shader loaded from disk*/
     size_t                  vertSize;               /**<memory size of the shader*/
     VkShaderModule          vertModule;             /**<the index of the shader module within the device*/
-    char                   *fragShader;             /**<the shader loaded from disk*/
+    char* fragShader;             /**<the shader loaded from disk*/
     size_t                  fragSize;               /**<memory size of the shader*/
     VkShaderModule          fragModule;             /**<the index of the shader module within the device*/
     VkDevice                device;
-    Uint32                 *descriptorCursor;       /**<keeps track of which descriptors have been used per frame*/
-    VkDescriptorPool       *descriptorPool;
+    Uint32* descriptorCursor;       /**<keeps track of which descriptors have been used per frame*/
+    VkDescriptorPool* descriptorPool;
     VkDescriptorSetLayout   descriptorSetLayout;
-    VkDescriptorSet       **descriptorSets;
+    VkDescriptorSet** descriptorSets;
     Uint32                  descriptorPoolCount;
     Uint32                  descriptorSetCount;
     Uint32                  drawCallCount;          /**<how many drawCalls have been queued*/
-    PipelineDrawCall       *drawCallList;           /**<cached draw calls for this frame*/
+    PipelineDrawCall* drawCallList;           /**<cached draw calls for this frame*/
     Uint32                  drawCallListCount;      /**<how many drawCalls are available*/
-    
-    char                   *uboData;                /**<pre-allocated cpu side UBO data*/
+
+    char* uboData;                /**<pre-allocated cpu side UBO data*/
     size_t                  uboBufferSize;          /**<how large the whole buffer is*/
     size_t                  uboDataSize;            /**<size of a single UBO for this pipeline*/
-    UniformBufferList      *uboBigBuffer;           /**<for batched draws.  This is the memory for ALL draws one per frame*/
-    
+    UniformBufferList* uboBigBuffer;           /**<for batched draws.  This is the memory for ALL draws one per frame*/
+
     VkCommandBuffer         commandBuffer;          /**<for current command*/
     VkIndexType             indexType;              /**<size of the indices in the index buffer*/
 }Pipeline;
@@ -61,7 +61,7 @@ void gf3d_pipeline_init();
 /**
  * @brief free a created pipeline
  */
-void gf3d_pipeline_free(Pipeline *pipe);
+void gf3d_pipeline_free(Pipeline* pipe);
 
 /**
  * @brief setup a pipeline for rendering
@@ -72,7 +72,7 @@ void gf3d_pipeline_free(Pipeline *pipe);
  * @param extent the viewport dimensions for this pipeline
  * @returns NULL on error (see logs) or a pointer to a pipeline
  */
-Pipeline *gf3d_pipeline_graphics_load(VkDevice device,const char *vertFile,const char *fragFile,VkExtent2D extent);
+Pipeline* gf3d_pipeline_graphics_load(VkDevice device, const char* vertFile, const char* fragFile, VkExtent2D extent);
 
 
 /**
@@ -88,13 +88,13 @@ Pipeline *gf3d_pipeline_graphics_load(VkDevice device,const char *vertFile,const
  * @param indexType VK_INDEX_TYPE_UINT16, VK_INDEX_TYPE_UINT32, or VK_INDEX_TYPE_UINT8_EXT
  * @returns NULL on error (see logs) or a pointer to a pipeline
 */
-Pipeline *gf3d_pipeline_create_from_config(
+Pipeline* gf3d_pipeline_create_from_config(
     VkDevice device,
-    const char *configFile,
+    const char* configFile,
     VkExtent2D extent,
     Uint32 descriptorCount,
     const VkVertexInputBindingDescription* vertexInputDescription,
-    const VkVertexInputAttributeDescription * vertextInputAttributeDescriptions,
+    const VkVertexInputAttributeDescription* vertextInputAttributeDescriptions,
     Uint32 vertexAttributeCount,
     VkDeviceSize bufferSize,
     VkIndexType indexType);
@@ -108,21 +108,21 @@ Pipeline *gf3d_pipeline_create_from_config(
  * @param descriptorCount the number of concurrent descriptSets to be suppert per command, ie: how many models you want to support for a draw call  This should be based on maximum number of supported entities or graphic assets
  * @returns NULL on error (see logs) or a pointer to a pipeline
  */
-Pipeline *gf3d_pipeline_basic_sprite_create(VkDevice device,const char *vertFile,const char *fragFile,VkExtent2D extent,Uint32 descriptorCount);
+Pipeline* gf3d_pipeline_basic_sprite_create(VkDevice device, const char* vertFile, const char* fragFile, VkExtent2D extent, Uint32 descriptorCount);
 
 /**
  * @brief get a descriptor set to be used for the pipeline.  Provide the swap chain rendering frame.
  * @param pipe the pipeline to get a descriptSet for
  * @param frame the swap chain rendering frame to get a descriptor set for.
  */
-VkDescriptorSet * gf3d_pipeline_get_descriptor_set(Pipeline *pipe, Uint32 frame);
+VkDescriptorSet* gf3d_pipeline_get_descriptor_set(Pipeline* pipe, Uint32 frame);
 
 /**
  * @brief reset the descriptor Set cursor for the given swap chain frame
  * @param pipe the pipeline to reset
  * @param frame the swap chain rendering frame to reset the cursor for
  */
-void gf3d_pipeline_reset_frame(Pipeline *pipe,Uint32 frame);
+void gf3d_pipeline_reset_frame(Pipeline* pipe, Uint32 frame);
 
 /**
  * @brief queue up a render for a pipeline
@@ -134,19 +134,19 @@ void gf3d_pipeline_reset_frame(Pipeline *pipe,Uint32 frame);
  * @param texture [optional] if you have a texture to render with, provide it here.  Note if the pipeline needs one, you MUST provide one
  */
 void gf3d_pipeline_queue_render(
-    Pipeline *pipe,
+    Pipeline* pipe,
     VkBuffer vertexBuffer,
     Uint32 vertexCount,
     VkBuffer indexBuffer,
-    void *uboData,
-    Texture *texture);
+    void* uboData,
+    Texture* texture);
 
 /**
  * @brief bind a draw call to the current command
  */
 void gf3d_pipeline_call_render(
-    Pipeline *pipe,
-    VkDescriptorSet * descriptorSet,
+    Pipeline* pipe,
+    VkDescriptorSet* descriptorSet,
     VkBuffer vertexBuffer,
     Uint32 vertexCount,
     VkBuffer indexBuffer);
@@ -160,7 +160,7 @@ void gf3d_pipeline_reset_all_pipes();
  * @brief submit the render calls to the pipeline for this frame.  Called after reset_frame and all draw calls
  * @param pipe for the pipe in question
  */
-void gf3d_pipeline_submit_commands(Pipeline *pipe);
+void gf3d_pipeline_submit_commands(Pipeline* pipe);
 
 /**
  * @brief submit the commands for ALL pipelines in the order in which they were created

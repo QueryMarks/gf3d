@@ -91,21 +91,37 @@ int main(int argc,char *argv[])
     gf2d_mouse_load("actors/mouse.actor");
     window_manager_init(128);
 
-    agumon_ent = player_spawn(gfc_vector3d(0,0,0));
+    
     //agumon_ent->model = model_load("models/dino/dino.model");
     //agumon_ent->rotation.z = 90;
     
+    agumon_ent = player_spawn(gfc_vector3d(0, 0, 0));
+
     Entity* test_ground_ent = entity_new();
-    test_ground_ent->position = gfc_vector3d(-100, -100, -20);
+    test_ground_ent->position = gfc_vector3d(1, 1, -1);
     test_ground_ent->solid = 1;
-    GFC_Box ground_box = gfc_box(-100, -100, -20, 200, 200, 5);
+    test_ground_ent->model = model_load("models/cube.model");
+    test_ground_ent->rotation.z = 1;
+    test_ground_ent->rotation.y = 1;
+    GFC_Box ground_box = gfc_box(0, 0, 0, 2, 2, 2);
     Collider* ground_collider = collider_new(ground_box, false, test_ground_ent);
     test_ground_ent->collider = ground_collider;
 
 
+    Entity* test_ground_ent2 = entity_new();
+    test_ground_ent2->position = gfc_vector3d(-1, -1, 1);
+    test_ground_ent2->solid = 1;
+    test_ground_ent2->model = model_load("models/cube.model");
+    GFC_Box ground_box2 = gfc_box(0, 0, 0, 2, 2, 2);
+    Collider* ground_collider2 = collider_new(ground_box2, false, test_ground_ent2);
+    test_ground_ent->collider = ground_collider2;
+
+    
+
+
     slog("making a new awesome window");
-    Window *window = window_new();
-    Element* window_text = text_new(window, gfc_vector2d(0, 0), gfc_vector2d(500, 300), "text");
+    //Window *window = window_new();
+    //Element* window_text = text_new(window, gfc_vector2d(0, 0), gfc_vector2d(500, 300), "text");
     
     slog("game loop about to start");
     

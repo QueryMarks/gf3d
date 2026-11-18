@@ -39,6 +39,11 @@ int player_think(Entity* self)
 	//slog("playor thinkin");
 	GFC_Vector3D move = { 0 };
 	if (!self)return 0;
+	if (gfc_input_command_down("enter"))
+	{
+		entity_free(self);
+		return;
+	}
 	if (gfc_input_command_down("item_up"))
 	{
 		//slog("moving up");
@@ -71,7 +76,7 @@ int player_think(Entity* self)
 	if (grounded == 1) //
 	{
 		//slog("my velocity is %f", self->velocity.z);
-		self->velocity.z -= 0.03f;
+		//self->velocity.z -= 0.03f;
 		//slog("NOW my velocity is %f", self->velocity.z);
 	}
 
@@ -81,7 +86,6 @@ int player_think(Entity* self)
 
 int player_update(Entity* self)
 {
-	slog("in player update");
 	GFC_Vector3D new_position;
 	gfc_vector3d_add(new_position, self->position, self->velocity);
 	if (self->collider)
@@ -118,7 +122,7 @@ int player_update(Entity* self)
 }
 
 int player_collide(Entity* self, void* collider) {
-	slog("player collided with something");
+	//slog("player collided with something");
 }
 
 
@@ -141,17 +145,11 @@ GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position) {
 	int adjusted = 0;
 	while (!(found_box.w == 0) && (adjusted <= 10))
 	{
+		/*
 		slog("colliding with box");
 		slog("My box  xyz whd: %f %f %f, %f %f %f", my_box.x, my_box.y, my_box.z, my_box.w, my_box.h, my_box.d);
 
 		slog("found box  xyz whd: %f %f %f, %f %f %f", found_box.x, found_box.y, found_box.z, found_box.w, found_box.h, found_box.d);
-		//i don't remember why i wrote the below back in gf2d. commenting it out because I assume it was totally unused
-		
-		/*
-		GFC_Vector3D my_center = box_get_center(my_box);
-		GFC_Vector3D found_center = box_get_center(found_box);
-		GFC_Vector3D center_subtract;
-		gfc_vector3d_add(center_subtract, my_center, -found_center);
 		*/
 
 		double vectorRight = -(my_box.x - (found_box.x + found_box.w));
@@ -197,12 +195,12 @@ GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position) {
 		{
 			if (abs(vectorFwd) < abs(vectorBack))
 			{
-				slog("hit on z moving FWD");
+				//slog("hit on z moving FWD");
 				move_position.z += vectorFwd;
 			}
 			else
 			{
-				slog("hit on z moving BACK");
+				//slog("hit on z moving BACK");
 				move_position.z += vectorBack;
 			}
 			self->velocity.z = 0;

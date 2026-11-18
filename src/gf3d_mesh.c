@@ -99,7 +99,7 @@ Mesh* gf3d_mesh_get_by_filename(const char* filename)
         {
             continue;
         }
-        if (gfc_strlcmp(filename, mesh_manager.mesh_list[i].filename))
+        if (gfc_strlcmp(filename, mesh_manager.mesh_list[i].filename) == 0)
         {
             return &mesh_manager.mesh_list[i];
         }
@@ -405,29 +405,29 @@ void gf3d_mesh_free(Mesh* mesh) {
 
 void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture) 
 {
-    //slog("mesh queue render time");
+    slog("mesh queue render time");
     MeshPrimitive* prim;
     if (!mesh || !pipe || !uboData || !texture)
     {
-        //slog("missing an argument for mesh_queue_render!");
+        slog("missing an argument for mesh_queue_render!");
         return;
     }
 
     int count;
     count = gfc_list_count(mesh->primitives);
-    //slog("count is %i", count);
+    slog("count is %i", count);
     for (int i = 0; i < count; i++)
     {
         prim = gfc_list_nth(mesh->primitives, i);
         if (!prim)
         {
-            //slog("no prim");
+            slog("no prim");
             continue;
         }
-        //slog("pipeline queue render time");
-        //if (mesh->filename) slog("queueing mesh %s", mesh->filename);
-        //slog("vertex count is %i", prim->objData->face_vert_count);
-        //slog("face count is %i", prim->objData->face_count);
+        slog("pipeline queue render time");
+        if (mesh->filename) slog("queueing mesh %s", mesh->filename);
+        slog("vertex count is %i", prim->objData->face_vert_count);
+        slog("face count is %i", prim->objData->face_count);
         gf3d_pipeline_queue_render(pipe, prim->vertexBuffer, prim->vertexCount, prim->faceBuffer, uboData, texture);
     }
 }

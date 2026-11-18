@@ -92,7 +92,7 @@ void entity_draw(Entity* ent)
 		ent->position,
 		ent->rotation,
 		ent->scale);
-	//slog("about to queue render for model %s", ent->model->fileName);
+	slog("about to queue render for model %s", ent->model->fileName);
 	gf3d_model_queue_render(ent->model, ent->mat, ent->colorMod);
 }
 void entity_think(Entity* ent)
@@ -121,6 +121,8 @@ void entity_update(Entity* ent)
 
 void entity_system_draw()
 {
+	//slog("drawing entity 4 sure");
+
 	int i;
 	for (i = 0; i < entity_manager.maxEnts; i++) {
 		if (!entity_manager.entityList[i]._inuse || !entity_manager.entityList[i].model)continue;
@@ -147,5 +149,5 @@ void entity_free(Entity *ent) {
 	if (!ent)return;
 	if (!ent->_inuse)return;
 	model_free(ent->model);
-	memset(ent, 9, sizeof(Entity));
+	memset(ent, 0, sizeof(Entity));
 };

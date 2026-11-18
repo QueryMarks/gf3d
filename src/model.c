@@ -41,7 +41,7 @@ void model_system_init(Uint32 model_count) {
 	slog("got attribute descriptions");
 
 	model_manager.model_count = model_count;
-	slog("about to set pipe from config");
+	slog("about to set pipe from config lalala");
 	model_manager.pipe = gf3d_pipeline_create_from_config(
 		gf3d_vgraphics_get_default_logical_device(),
 		"config/model_pipeline.cfg",
@@ -49,7 +49,7 @@ void model_system_init(Uint32 model_count) {
 		model_count,
 		gf3d_mesh_get_bind_description(),
 		gf3d_mesh_get_attribute_descriptions(NULL),
-		count, //ask about this one
+		3, //ask about this one
 		sizeof(ModelUBO),
 		VK_INDEX_TYPE_UINT32
 	);
@@ -99,6 +99,7 @@ void gf3d_model_queue_render(Model* model, GFC_Matrix4 mat, GFC_Color colormod)
 		return;
 	}
 	ModelUBO ubo = model_get_ubo(mat, colormod);
+	slog("texture for model being rendered is %s", model->texture->filename);
 	gf3d_mesh_queue_render(model->mesh, model_manager.pipe, &ubo, model->texture);
 }
 
@@ -157,6 +158,7 @@ Model* model_new() {
 			//found a valid model slot
 			//model_delete(&model_manager.model_list[i]);
 			model_manager.model_list[i]._refCount = 1;
+			slog("found model space at %i", i);
 			return &model_manager.model_list[i];
 		}
 		//need a different one in case these aren't initialized, i guess?
@@ -164,6 +166,7 @@ Model* model_new() {
 		{ 
 			//model_delete(&model_manager.model_list[i]);
 			model_manager.model_list[i]._refCount = 1;
+			slog("found model space at %i", i);
 			return &model_manager.model_list[i];
 		}
 		slog("looped, found no model space");
@@ -181,8 +184,10 @@ Model* model_get_by_filename(const char* filename) {
 			continue;
 		}
 
-		if (gfc_strlcmp(filename, model_manager.model_list[i].fileName))
+		slog("comparing these two models: %s, %s", filename, model_manager.model_list[i].fileName);
+		if (gfc_strlcmp(filename, model_manager.model_list[i].fileName) == 0)
 		{
+			slog("found the same model, returning it");
 			return(&model_manager.model_list[i]);
 		}
 
@@ -192,7 +197,7 @@ Model* model_get_by_filename(const char* filename) {
 }
 Model* model_load(const char* filename)
 {
-
+	slog("loading model %s", filename);
 	const char* str = NULL;
 	const char* str2 = NULL;
 	SJson* json;
@@ -220,7 +225,7 @@ Model* model_load(const char* filename)
 		slog("failed to load json model");
 		return NULL;
 	}
-	slog("found the json info for this model");
+	slog("found the json info for this model %s", filename);
 
 	data = sj_object_get_value(json, "model");
 	if (!json)

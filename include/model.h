@@ -23,6 +23,7 @@ typedef struct
 	GFC_Matrix4		view;
 	GFC_Matrix4		proj;
 	GFC_Vector4D	color;
+	float			_pad[12]; //padding to get this to the right size, to fix memory misalignment?
 }ModelUBO;
 
 
