@@ -33,6 +33,8 @@
 #include "enemy.h"
 #include "rpg_battler.h"
 
+#include "puzzle.h"
+
 extern int __DEBUG;
 
 static int _done = 0;
@@ -45,6 +47,34 @@ void game_frame_delay();
 void exitGame()
 {
     _done = 1;
+}
+
+void make_platform(GFC_Vector3D position, GFC_Vector3D scale)
+{
+    Entity* test_ground_ent = entity_new();
+    test_ground_ent->position = position;
+    test_ground_ent->solid = 1;
+    test_ground_ent->model = model_load("models/cube.model");
+    GFC_Box ground_box = gfc_box(0, 0, 0, 2, 2, 2);
+    //GFC_Vector3D ground_scale = gfc_vector3d(40, 40, 1);
+    test_ground_ent->scale = scale;
+    //test_ground_ent->rotation.z = 1;
+    //test_ground_ent->rotation.y = 1;
+
+    GFC_Vector3D ground_box_scaled_vector = gfc_vector3d_multiply(gfc_vector3d(ground_box.w, ground_box.h, ground_box.d), scale);
+    GFC_Box ground_box_scaled = gfc_box(
+        ground_box.x,
+        ground_box.y,
+        ground_box.z,
+        ground_box_scaled_vector.x,
+        ground_box_scaled_vector.y,
+        ground_box_scaled_vector.z);
+
+    Collider* ground_collider = collider_new(ground_box_scaled, false, test_ground_ent);
+    test_ground_ent->collider = ground_collider;
+    ground_collider->entity = test_ground_ent;
+    collider_reposition(test_ground_ent->collider);
+    ground_collider = test_ground_ent->collider;
 }
 
 
@@ -102,38 +132,39 @@ int main(int argc,char *argv[])
     agumon_ent = player_spawn(gfc_vector3d(0, 0, 0));
     agumon_ent->colorMod = GFC_COLOR_MAGENTA;
 
-    Entity* test_ground_ent = entity_new();
-    test_ground_ent->position = gfc_vector3d(0, 0, -2);
-    test_ground_ent->solid = 1;
-    test_ground_ent->model = model_load("models/cube.model");
-    GFC_Box ground_box = gfc_box(0, 0, 0, 2, 2, 2);
-    GFC_Vector3D ground_scale = gfc_vector3d(40, 40, 1);
-    test_ground_ent->scale = ground_scale;
-    //test_ground_ent->rotation.z = 1;
-    //test_ground_ent->rotation.y = 1;
-    
-    GFC_Vector3D ground_box_scaled_vector = gfc_vector3d_multiply(gfc_vector3d(ground_box.w, ground_box.h, ground_box.d), ground_scale);
-    GFC_Box ground_box_scaled = gfc_box(
-        ground_box.x, 
-        ground_box.y,
-        ground_box.z,
-        ground_box_scaled_vector.x,
-        ground_box_scaled_vector.y, 
-        ground_box_scaled_vector.z);
-    
-    Collider* ground_collider = collider_new(ground_box_scaled, false, test_ground_ent);
-    test_ground_ent->collider = ground_collider;
-    ground_collider->entity = test_ground_ent;
-    collider_reposition(test_ground_ent->collider);
-    ground_collider = test_ground_ent->collider;
+    make_platform(
+        gfc_vector3d(0, 0, -1),
+        gfc_vector3d(40, 40, 1)
+    );
 
-    slog("ground box is as follows: %f %f %f %f %f %f", ground_collider->box.x, ground_collider->box.y, ground_collider->box.z, ground_collider->box.w, ground_collider->box.h, ground_collider->box.d);
+    make_platform(
+        gfc_vector3d(70, 5, -1),
+        gfc_vector3d(20, 20, 1)
+    );
 
+
+    
     //test enemy
-    Entity* test_enemy = enemy_entity_new(gfc_vector3d(5,5,0));
-    collider_reposition(test_enemy->collider);
+    Entity* test_enemy = enemy_entity_new(gfc_vector3d(5,5,1));
+ 
 
-    
+    enemy_entity_new(gfc_vector3d(10, 20, 1));
+
+    enemy_entity_new(gfc_vector3d(-20, -20, 1));
+
+    enemy_entity_new(gfc_vector3d(90, -30, 1));
+    enemy_entity_new(gfc_vector3d(100, 40, 1));
+
+    Entity* door = wood_door_entity_new(gfc_vector3d(-5, -3, 4));
+    wood_door_entity_new(gfc_vector3d(-10, -3, 4));
+
+    grate_door_entity_new(gfc_vector3d(4, -3, 4));
+
+
+    //commented out because it takes forever to load
+    Entity* awesome_purple_agumon = awesome_purple_agumon_entity_new(gfc_vector3d(70, 10, 1));
+
+
 
     /*
     Entity* test_ground_ent2 = entity_new();
@@ -148,6 +179,7 @@ int main(int argc,char *argv[])
     
 
     GFC_Vector3D cam_pos;
+    GFC_Vector3D cam_target = gfc_vector3d(0, 0, 0);
     slog("making a new awesome window");
     //Window *window = window_new();
     //Element* window_text = text_new(window, gfc_vector2d(0, 0), gfc_vector2d(500, 300), "text");
@@ -168,8 +200,18 @@ int main(int argc,char *argv[])
         //slog("after graphics render start");
                 //2D draws
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
-                gfc_vector3d_add(cam_pos, agumon_ent->position, gfc_vector3d(0, -20, 10));
-                gfc_matrix4_view(*view, cam_pos, agumon_ent->position, gfc_vector3d(0, 0, 1));
+                if (rpg_battle_get_active())
+                {
+                    cam_target = gfc_vector3d(agumon_ent->position.x + 2, agumon_ent->position.y + 2, agumon_ent->position.z);
+                    gfc_vector3d_add(cam_pos, agumon_ent->position, gfc_vector3d(0, -7, 3));
+                }
+                else
+                {
+                    cam_target = agumon_ent->position;
+                    gfc_vector3d_add(cam_pos, agumon_ent->position, gfc_vector3d(0, -20, 10));
+                }
+                
+                gfc_matrix4_view(*view, cam_pos, cam_target, gfc_vector3d(0, 0, 1));
                 //slog("at window stuff");
                 window_manager_think_all();
                 //slog("after window think");

@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "model.h"
 #include "gfc_color.h"
+#include "collider.h"
 
 
 typedef struct
@@ -16,9 +17,13 @@ static EntityManager entity_manager = { 0 };
 void entity_think(Entity* ent);
 void entity_update(Entity* ent);
 void entity_draw(Entity* ent);
+int	entity_postupdate(struct Entity_S* self);
 
-
-//
+//just in case
+void entity_collide(Entity* self, void* other)
+{
+	return;
+}
 
 void entity_close()
 {
@@ -71,11 +76,15 @@ Entity* entity_new()
 		entity_manager.entityList[i].scale = gfc_vector3d(1, 1, 1);
 		entity_manager.entityList[i].colorMod = GFC_COLOR_WHITE;
 		entity_manager.entityList[i].entity_type = "EMPTY_ENTITY";
+		entity_manager.entityList[i].collide = entity_collide;
+		entity_manager.entityList[i].postupdate = entity_postupdate;
 		slog("successfully created entity WOWOWOWOWOW AWESOME!!! 1 1 1 !! !11!");
 		return &entity_manager.entityList[i];
 	}
 	return NULL;
 }
+
+
 
 void entity_draw(Entity* ent)
 {
@@ -162,5 +171,10 @@ void entity_free(Entity *ent) {
 	if (!ent)return;
 	if (!ent->_inuse)return;
 	model_free(ent->model);
+	if (ent->collider)
+	{
+		collider_free(ent->collider);
+	}
+	
 	memset(ent, 0, sizeof(Entity));
 };

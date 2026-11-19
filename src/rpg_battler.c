@@ -2,6 +2,7 @@
 #include "rpg_battler.h"
 #include "gfc_input.h"
 #include "gf2d_font.h"
+#include "math.h"
 
 
 typedef struct {
@@ -81,8 +82,14 @@ void rpg_battle_start(RPG_Battler* player, RPG_Battler* enemy)
 	}
 	rpg_battle_manager.active = 1;
 	rpg_battle_manager.player = player;
+	player->entity->battling = 1;
+	player->entity->rotation.z = M_PI*3/4;
 	rpg_battle_manager.enemy = enemy;
 	rpg_battle_manager.turn_phase = 0;
+	enemy->entity->battling = 1;
+	enemy->entity->position = gfc_vector3d(player->entity->position.x + 5, player->entity->position.y + 5, player->entity->position.z);
+	enemy->entity->rotation.z = M_PI * 7 / 4;
+	slog("Choose wisely, haunt...");
 }
 
 void rpg_battle_end()
@@ -118,7 +125,7 @@ void rpg_battle_think() {
 	{
 		case 0:
 			if (rpg_battle_manager.player_ready == 0) {
-				slog("Choose wisely, haunt...");
+				
 				break;
 			}
 			else
@@ -128,27 +135,21 @@ void rpg_battle_think() {
 				rpg_battle_advance_turn_phase();
 			}
 		case 1:
-			if (gfc_input_command_pressed("action"))
-			{
-				rpg_battle_advance_turn_phase();
-			}
-			break;
-		case 2:
 			player->turn(player);
 			rpg_battle_advance_turn_phase();
 			break;
 
-		case 3:
+		case 2:
 			if (gfc_input_command_pressed("action"))
 			{
 				rpg_battle_advance_turn_phase();
 			}
 			break;
-		case 4:
+		case 3:
 			enemy->turn(enemy);
 			rpg_battle_advance_turn_phase();
 			break;
-		case 5:
+		case 4:
 			if (gfc_input_command_pressed("action"))
 			{
 				rpg_battle_advance_turn_phase();
@@ -156,6 +157,17 @@ void rpg_battle_think() {
 			break;
 		default:
 			slog("Round over.");
+			if (player->status == STATUS_CREMATE)
+			{
+				slog("%s took damage from the cremating fires...", player->name);
+				player->hp -= 1;
+			}
+			if (enemy->status == STATUS_CREMATE)
+			{
+				slog("%s took damage from the cremating fires...", enemy->name);
+				enemy->hp -= 1;
+			}
+			slog("Choose wisely, haunt...");
 			rpg_battle_manager.turn_phase = 0;
 	}
 }
@@ -170,8 +182,6 @@ void rpg_battle_draw() {
 	gf2d_font_draw_line_tag(buffer, FT_H1, GFC_COLOR_WHITE, gfc_vector2d(800, 10));
 
 	sprintf(buffer, "%s HP: %i", rpg_battle_manager.player->name, rpg_battle_manager.player->hp);
-
-
 	gf2d_font_draw_line_tag(buffer, FT_H1, GFC_COLOR_WHITE, gfc_vector2d(120, 10));
 }
 
@@ -190,13 +200,48 @@ void attack(RPG_Battler* self) {
 	if (opponent != NULL)
 	{
 		damage = self->atk - opponent->def;
+		if (opponent->status == STATUS_FLOAT)
+		{
+			slog("%s is floating! Less damage.", opponent->name);
+			damage -= 1;
+		}
+		else if (opponent->status == STATUS_INTANGIBLE)
+		{
+			slog("%s is intangible! Takes no damage!", opponent->name);
+			damage = 0;
+		}
+		if (self->status == STATUS_INTANGIBLE)
+		{
+			slog("%s is intangible! Attacks are very weak, but pierce defense.", self->name);
+			damage = 1;
+		}
 		if (damage >= 0)
 		{
-			slog("%s's attack! Did %i damage to %s.", self->name, damage, opponent->name);
-			opponent->hp -= damage;
-			if (opponent->hp <= 0)
+			int rando = 1;
+			if (self->status == STATUS_PURPLE)
 			{
-				rpg_battle_end();
+				slog("Things are getting PURPLE...");
+				rando = gfc_random_int(2);
+
+			}
+			if (rando == 0)
+			{
+				slog("The purple is too much! %s can't attack!", self->name);
+			}
+			else
+			{
+				//regular attack here
+				slog("%s's attack! Did %i damage to %s.", self->name, damage, opponent->name);
+				opponent->hp -= damage;
+				if (self->status == STATUS_CURSE)
+				{
+					slog("The curse takes its toll... -2 HP!");
+					self->hp -= 2;
+				}
+				if (opponent->hp <= 0)
+				{
+					rpg_battle_end();
+				}
 			}
 		}
 		else

@@ -77,4 +77,7 @@ void entity_system_think();
 * @brief draw all active entities
 **/
 void entity_system_draw();
+
+//default draw behavior
+void entity_draw(Entity* ent);
 #endif

@@ -1,0 +1,7 @@
+{
+	"model":
+	{
+		"obj":"models/cube.obj",
+		"texture":"models/door.png"
+	}
+}
