@@ -156,9 +156,9 @@ int main(int argc,char *argv[])
     enemy_entity_new(gfc_vector3d(100, 40, 1));
 
     Entity* door = wood_door_entity_new(gfc_vector3d(-5, -3, 4));
-    wood_door_entity_new(gfc_vector3d(-10, -3, 4));
+    wood_door_entity_new(gfc_vector3d(-11, -3, 4));
 
-    grate_door_entity_new(gfc_vector3d(4, -3, 4));
+    grate_door_entity_new(gfc_vector3d(6, -3, 4));
 
 
     //commented out because it takes forever to load

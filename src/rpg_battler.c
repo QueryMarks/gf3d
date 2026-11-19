@@ -80,6 +80,10 @@ void rpg_battle_start(RPG_Battler* player, RPG_Battler* enemy)
 		slog("Battle already in progress. Hold your horses.");
 		return;
 	}
+	if ((player->hp <= 0) || (enemy->hp <= 0))
+	{
+		return;
+	}
 	rpg_battle_manager.active = 1;
 	rpg_battle_manager.player = player;
 	player->entity->battling = 1;
@@ -167,8 +171,15 @@ void rpg_battle_think() {
 				slog("%s took damage from the cremating fires...", enemy->name);
 				enemy->hp -= 1;
 			}
-			slog("Choose wisely, haunt...");
-			rpg_battle_manager.turn_phase = 0;
+			if ((player->hp <= 0) || (enemy->hp<= 0))
+			{
+				rpg_battle_end();
+			}
+			else
+			{
+				slog("Choose wisely, haunt...");
+				rpg_battle_manager.turn_phase = 0;
+			}
 	}
 }
 
@@ -238,15 +249,16 @@ void attack(RPG_Battler* self) {
 					slog("The curse takes its toll... -2 HP!");
 					self->hp -= 2;
 				}
-				if (opponent->hp <= 0)
-				{
-					rpg_battle_end();
-				}
+
 			}
 		}
 		else
 		{
 			slog("%s's attack was ineffective...", self->name);
+		}
+		if (opponent->hp <= 0)
+		{
+			rpg_battle_end();
 		}
 	}
 }
