@@ -92,6 +92,7 @@ void collider_manager_check_collisions() {
 			if (checkCollision(colliderManagerDynamic.colliderList[j], colliderManagerDynamic.colliderList[i])) {
 				if ((colliderManagerDynamic.colliderList[j].entity != NULL) && (colliderManagerDynamic.colliderList[i].entity != NULL))
 				{
+					//slog("two colliders are collidening");
 					colliderManagerDynamic.colliderList[j].entity->collide(colliderManagerDynamic.colliderList[j].entity, &colliderManagerDynamic.colliderList[i]);
 				}
 				if ((colliderManagerDynamic.colliderList[j].entity != NULL) && (colliderManagerDynamic.colliderList[i].entity != NULL))
@@ -126,7 +127,7 @@ GFC_Box collider_manager_check_static_collisions(GFC_Box box) {
 	for (int i = 0; i < colliderManagerStatic.colliderMax; i++) {
 		if (colliderManagerStatic.colliderList[i]._inuse != 1)continue;
 		if (gfc_box_overlap_excl(box, colliderManagerStatic.colliderList[i].box)) {
-			slog("collided with static box");
+			//slog("collided with static box");
 			return colliderManagerStatic.colliderList[i].box;
 		}
 	}
@@ -141,7 +142,7 @@ GFC_Box collider_manager_check_solid_collisions(GFC_Box box) {
 		if (colliderManagerDynamic.colliderList[i]._inuse != 1)continue;
 		if (colliderManagerDynamic.colliderList[i].entity->solid != 1)continue;
 		if (gfc_box_overlap_excl(box, colliderManagerDynamic.colliderList[i].box)) {
-			slog("collided with solid box");
+			//slog("collided with solid box");
 			return colliderManagerDynamic.colliderList[i].box;
 		}
 	}
@@ -188,4 +189,34 @@ GFC_Vector3D box_get_center(GFC_Box my_box)
 		my_box.y + 0.5 * my_box.h,
 		my_box.z + 0.5 * my_box.d);
 	return my_center;
+}
+
+GFC_Box box_scale(GFC_Box my_box, GFC_Vector3D scale)
+{
+	GFC_Box new_box = my_box;
+	new_box.w *= scale.x;
+	new_box.h *= scale.y;
+	new_box.d *= scale.z;
+
+	//scale back the new_box.x,y,z by 1/2 the width difference? maybe?
+	new_box.x = my_box.x + (my_box.w - new_box.w) * 1 / 2;
+	new_box.y = my_box.y + (my_box.h - new_box.h) * 1 / 2;
+	new_box.z = my_box.z + (my_box.d - new_box.d) * 1 / 2;
+	return new_box;
+}
+
+//sets a collider's position halfway because of centered models etc
+void collider_reposition(Collider* self)
+{
+	self->box.x = self->entity->position.x - (0.5f * self->box.w);// *self->entity->scale.x);
+	self->box.y = self->entity->position.y - (0.5f * self->box.h);// *self->entity->scale.y);
+	self->box.z = self->entity->position.z - (0.5f * self->box.d);// *self->entity->scale.z);
+}
+
+GFC_Box box_reposition(GFC_Box box, GFC_Vector3D position)
+{
+	box.x = position.x - (0.5f * box.w);
+	box.y = position.y - (0.5f * box.h);
+	box.z = position.z - (0.5f * box.d);
+	return box;
 }

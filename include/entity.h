@@ -4,6 +4,7 @@
 #include "gfc_vector.h"
 #include "gfc_color.h"
 
+
 #include "model.h"
 
 typedef struct Entity_S
@@ -19,7 +20,10 @@ typedef struct Entity_S
 	GFC_Vector3D	velocity;
 	GFC_Color		colorMod;
 
-	float health;
+	//float health;
+
+	Uint8	battling; //0 if not battling. 1 if battling
+	void*	rpg_battler;
 
 
 
@@ -57,6 +61,12 @@ void entity_free(Entity *ent);
 * @brief run updates on all active entities
 **/
 void entity_system_update();
+
+/**
+* @brief run postupdates on all active entities
+**/
+void entity_system_postupdate();
+
 
 /**
 * @brief run think on all active entities

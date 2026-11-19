@@ -30,6 +30,9 @@
 #include "player.h"
 #include "collider.h"
 
+#include "enemy.h"
+#include "rpg_battler.h"
+
 extern int __DEBUG;
 
 static int _done = 0;
@@ -76,6 +79,7 @@ int main(int argc,char *argv[])
 
     collider_manager_init(1024);
 
+    rpg_battle_manager_init();
     slog("gf3d initiated");
     //init audio here too please
     
@@ -96,29 +100,54 @@ int main(int argc,char *argv[])
     //agumon_ent->rotation.z = 90;
     
     agumon_ent = player_spawn(gfc_vector3d(0, 0, 0));
+    agumon_ent->colorMod = GFC_COLOR_MAGENTA;
 
     Entity* test_ground_ent = entity_new();
-    test_ground_ent->position = gfc_vector3d(1, 1, -1);
+    test_ground_ent->position = gfc_vector3d(0, 0, -2);
     test_ground_ent->solid = 1;
     test_ground_ent->model = model_load("models/cube.model");
-    test_ground_ent->rotation.z = 1;
-    test_ground_ent->rotation.y = 1;
     GFC_Box ground_box = gfc_box(0, 0, 0, 2, 2, 2);
-    Collider* ground_collider = collider_new(ground_box, false, test_ground_ent);
+    GFC_Vector3D ground_scale = gfc_vector3d(40, 40, 1);
+    test_ground_ent->scale = ground_scale;
+    //test_ground_ent->rotation.z = 1;
+    //test_ground_ent->rotation.y = 1;
+    
+    GFC_Vector3D ground_box_scaled_vector = gfc_vector3d_multiply(gfc_vector3d(ground_box.w, ground_box.h, ground_box.d), ground_scale);
+    GFC_Box ground_box_scaled = gfc_box(
+        ground_box.x, 
+        ground_box.y,
+        ground_box.z,
+        ground_box_scaled_vector.x,
+        ground_box_scaled_vector.y, 
+        ground_box_scaled_vector.z);
+    
+    Collider* ground_collider = collider_new(ground_box_scaled, false, test_ground_ent);
     test_ground_ent->collider = ground_collider;
+    ground_collider->entity = test_ground_ent;
+    collider_reposition(test_ground_ent->collider);
+    ground_collider = test_ground_ent->collider;
 
+    slog("ground box is as follows: %f %f %f %f %f %f", ground_collider->box.x, ground_collider->box.y, ground_collider->box.z, ground_collider->box.w, ground_collider->box.h, ground_collider->box.d);
 
+    //test enemy
+    Entity* test_enemy = enemy_entity_new(gfc_vector3d(5,5,0));
+    collider_reposition(test_enemy->collider);
+
+    
+
+    /*
     Entity* test_ground_ent2 = entity_new();
     test_ground_ent2->position = gfc_vector3d(-1, -1, 1);
     test_ground_ent2->solid = 1;
     test_ground_ent2->model = model_load("models/cube.model");
     GFC_Box ground_box2 = gfc_box(0, 0, 0, 2, 2, 2);
     Collider* ground_collider2 = collider_new(ground_box2, false, test_ground_ent2);
-    test_ground_ent->collider = ground_collider2;
-
+    test_ground_ent2->collider = ground_collider2;
+    test_ground_ent2->scale = gfc_vector3d(2, 2, 2);
+    */
     
 
-
+    GFC_Vector3D cam_pos;
     slog("making a new awesome window");
     //Window *window = window_new();
     //Element* window_text = text_new(window, gfc_vector2d(0, 0), gfc_vector2d(500, 300), "text");
@@ -139,8 +168,8 @@ int main(int argc,char *argv[])
         //slog("after graphics render start");
                 //2D draws
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
-
-                gfc_matrix4_view(*view, gfc_vector3d(0,-15,0), gfc_vector3d(0, 0, 0), gfc_vector3d(0, 0, 1));
+                gfc_vector3d_add(cam_pos, agumon_ent->position, gfc_vector3d(0, -20, 10));
+                gfc_matrix4_view(*view, cam_pos, agumon_ent->position, gfc_vector3d(0, 0, 1));
                 //slog("at window stuff");
                 window_manager_think_all();
                 //slog("after window think");
@@ -148,10 +177,21 @@ int main(int argc,char *argv[])
                 //slog("after window update");
                 window_manager_draw_all();
                 //slog("after window draw");
+                collider_manager_check_collisions();
                 entity_system_think();
                 entity_system_update();
+                entity_system_postupdate();
                 entity_system_draw();
-                gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
+
+                if (rpg_battle_get_active())
+                {
+                    rpg_battle_think();
+                    rpg_battle_update();
+                    rpg_battle_draw();
+                }
+                
+
+                //gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 
                 
 

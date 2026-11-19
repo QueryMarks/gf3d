@@ -99,7 +99,7 @@ void gf3d_model_queue_render(Model* model, GFC_Matrix4 mat, GFC_Color colormod)
 		return;
 	}
 	ModelUBO ubo = model_get_ubo(mat, colormod);
-	slog("texture for model being rendered is %s", model->texture->filename);
+	//slog("texture for model being rendered is %s", model->texture->filename);
 	gf3d_mesh_queue_render(model->mesh, model_manager.pipe, &ubo, model->texture);
 }
 

@@ -1,0 +1,7 @@
+{
+	"model":
+	{
+		"obj":"models/cube.obj",
+		"texture":"images/cube_enemy.png"
+	}
+}

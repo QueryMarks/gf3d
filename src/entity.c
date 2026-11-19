@@ -92,7 +92,7 @@ void entity_draw(Entity* ent)
 		ent->position,
 		ent->rotation,
 		ent->scale);
-	slog("about to queue render for model %s", ent->model->fileName);
+	//slog("about to queue render for model %s", ent->model->fileName);
 	gf3d_model_queue_render(ent->model, ent->mat, ent->colorMod);
 }
 void entity_think(Entity* ent)
@@ -118,7 +118,12 @@ void entity_update(Entity* ent)
 	}
 	else gfc_vector3d_clear(ent->velocity);
 }
-
+int	entity_postupdate(struct Entity_S* self) {
+	if (self->removeme)
+	{
+		entity_free(self);
+	}
+}
 void entity_system_draw()
 {
 	//slog("drawing entity 4 sure");
@@ -145,6 +150,14 @@ void entity_system_update()
 		entity_update(&entity_manager.entityList[i]);
 	}
 }
+void entity_system_postupdate() {
+	int i;
+	for (i = 0; i < entity_manager.maxEnts; i++) {
+		if (!entity_manager.entityList[i]._inuse)continue;
+		entity_postupdate(&entity_manager.entityList[i]);
+	}
+}
+
 void entity_free(Entity *ent) {
 	if (!ent)return;
 	if (!ent->_inuse)return;

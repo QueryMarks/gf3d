@@ -29,6 +29,7 @@ typedef struct
     GFC_Vector2D center;
     float drawOrder;
     GFC_Vector3D padding;
+    float _extra_padding[24]; //same as the model issue
 }SpriteUBO;
 
 typedef struct

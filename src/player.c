@@ -5,10 +5,16 @@
 
 #include "collider.h"
 
+#include "rpg_battler.h"
+
 
 int player_think(Entity* self);
 int player_update(Entity* self);
 int player_collide(Entity* self, void* collider);
+
+int player_turn(RPG_Battler* self);
+int player_attack(RPG_Battler* self);
+
 
 GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position);
 
@@ -17,17 +23,30 @@ Entity* player_spawn(GFC_Vector3D position)
 	Entity* self;
 	self = entity_new();
 	if (!self)return NULL;
-	self->model = model_load("models/dino/dino.model");
+	self->model = model_load("models/cube_player.model");
 	self->position = position;
 	self->think = player_think;
 	self->update = player_update;
 
 
 	//collider setup
-	GFC_Box box = gfc_box(position.x, position.y, position.z, 1, 1, 1);
+	GFC_Box box = gfc_box(position.x, position.y, position.z, 2, 2, 2);
 	self->collider = collider_new(box, true, self);
+	collider_reposition(self->collider);
 
 	self->collide = player_collide;
+
+	slog("creating player battler");
+	RPG_Battler* battler = rpg_battler_new(self);
+	battler->atk = 3;
+	battler->def = 0;
+	slog("before setting name");
+	battler->name = "Player";
+	battler->attack = player_attack;
+	battler->turn = player_turn;
+	battler->is_player = 1;
+	self->rpg_battler = battler;
+	slog("created battler");
 
 
 	return self;
@@ -66,7 +85,7 @@ int player_think(Entity* self)
 	{
 		//slog("setting velocity");
 		gfc_vector3d_normalize(&move);
-		self->velocity = move;
+		gfc_vector3d_scale(self->velocity,move,0.5);
 		//ROTATION
 		self->rotation.z = atan2(move.x, -move.y);//(2*M_PI)*360;
 
@@ -76,9 +95,19 @@ int player_think(Entity* self)
 	if (grounded == 1) //
 	{
 		//slog("my velocity is %f", self->velocity.z);
-		//self->velocity.z -= 0.03f;
+		self->velocity.z -= 0.03f;
 		//slog("NOW my velocity is %f", self->velocity.z);
 	}
+
+	if (rpg_battle_get_active())
+	{
+		RPG_Battler* battler = (RPG_Battler*)self->rpg_battler;
+		if (gfc_input_command_pressed("action")) {
+			battler->action_choice = 0;
+			rpg_battle_set_player_ready(1);
+		}
+	}
+
 
 	return 0;
 
@@ -98,9 +127,8 @@ int player_update(Entity* self)
 	Collider* collider = self->collider;
 	if (collider->_inuse == 1)
 	{
-		collider->box.x = self->position.x;
-		collider->box.y = self->position.y;
-		collider->box.z = self->position.z;
+
+		collider_reposition(self->collider);
 
 
 		//ground check rect here
@@ -122,7 +150,24 @@ int player_update(Entity* self)
 }
 
 int player_collide(Entity* self, void* collider) {
+	
+	
 	//slog("player collided with something");
+	Collider* collided = (Collider*)collider;
+	if (collided->isDynamic) {
+		slog("collided with something dynamic");
+	}
+	RPG_Battler* my_battler = (RPG_Battler*)self->rpg_battler;
+	if ((my_battler != NULL) && (collided->entity->rpg_battler != NULL)
+		&& (!self->battling) && (!collided->entity->battling))
+	{
+		slog("Collided with a BATTLER!!!");
+		RPG_Battler* battler = (RPG_Battler*)collided->entity->rpg_battler;
+		if (battler->is_player != 1) {
+			slog("Initiating enemy battle.");
+			rpg_battle_start(self->rpg_battler, battler);
+		}
+	}
 }
 
 
@@ -131,9 +176,7 @@ GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position) {
 	Collider* collider = self->collider;
 	if (collider->_inuse != 1)return;
 	GFC_Box my_box = collider->box;
-	my_box.x = move_position.x;
-	my_box.y = move_position.y;
-	my_box.z = move_position.z;
+	//box_reposition(my_box, move_position);
 	//check for static collisions (level tiles for example)
 	GFC_Box found_box = collider_manager_check_static_collisions(my_box);
 	//if the box is empty, check for solid entities
@@ -145,12 +188,12 @@ GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position) {
 	int adjusted = 0;
 	while (!(found_box.w == 0) && (adjusted <= 10))
 	{
-		/*
-		slog("colliding with box");
-		slog("My box  xyz whd: %f %f %f, %f %f %f", my_box.x, my_box.y, my_box.z, my_box.w, my_box.h, my_box.d);
+		
+		//slog("colliding with box");
+		//slog("My box  xyz whd: %f %f %f, %f %f %f", my_box.x, my_box.y, my_box.z, my_box.w, my_box.h, my_box.d);
 
-		slog("found box  xyz whd: %f %f %f, %f %f %f", found_box.x, found_box.y, found_box.z, found_box.w, found_box.h, found_box.d);
-		*/
+		//slog("found box  xyz whd: %f %f %f, %f %f %f", found_box.x, found_box.y, found_box.z, found_box.w, found_box.h, found_box.d);
+		
 
 		double vectorRight = -(my_box.x - (found_box.x + found_box.w));
 		double vectorLeft = -((my_box.w + my_box.x) - found_box.x);
@@ -208,18 +251,23 @@ GFC_Vector3D player_check_move(Entity* self, GFC_Vector3D move_position) {
 
 		//set the new box space for next loop
 
-		my_box.y = move_position.y;
-		my_box.x = move_position.x;
-		my_box.z = move_position.z;
+		my_box = box_reposition(my_box, move_position);
 
 		//check for static collisions (level tiles for example)
-		GFC_Box found_box = collider_manager_check_static_collisions(my_box);
+		found_box = collider_manager_check_static_collisions(my_box);
 		//if the box is empty, check for solid entities
-		if (my_box.w == 0)
+		if (found_box.w == 0)
 		{
 			found_box = collider_manager_check_solid_collisions(my_box);
 		}
 		adjusted += 1;
 	}
 	return move_position;
+}
+//custom behavior here
+int player_turn(RPG_Battler* self) {
+	player_attack(self);
+}
+int player_attack(RPG_Battler* self) {
+	attack(self);
 }

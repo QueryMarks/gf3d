@@ -40,6 +40,9 @@ enum TEAM
 GFC_Box collider_manager_check_static_collisions(GFC_Box box);
 GFC_Box collider_manager_check_solid_collisions(GFC_Box box);
 
+//repositions a collider based on the center instead of the max
+void collider_reposition(Collider* self);
+GFC_Box box_reposition(GFC_Box box, GFC_Vector3D position);
 
 GFC_Vector3D box_get_center(GFC_Box my_box);
 

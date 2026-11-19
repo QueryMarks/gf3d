@@ -113,9 +113,9 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
     MeshPrimitive* prim;
     ObjData* objData;
 
-    slog("about to get mesh by filename");
+    //slog("about to get mesh by filename");
     mesh = gf3d_mesh_get_by_filename(filename);
-    slog("checked for mesh by filename");
+    //slog("checked for mesh by filename");
     if (mesh)
     {
         //mesh already loaded
@@ -124,7 +124,7 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
         return mesh;
     }
     mesh = gf3d_mesh_new();
-    slog("created a new mesh");
+    //slog("created a new mesh");
     if (!mesh)
     {
         slog("no mesh");
@@ -132,16 +132,16 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
     }
 
     prim = gf3d_mesh_primitive_new();
-    slog("created a new prim");
+    //slog("created a new prim");
 
     if (!prim)
     {
         slog("failed to load mesh primitive");
         return NULL;
     }
-    slog("going to load obj");
+    //slog("going to load obj");
     objData = gf3d_obj_load_from_file(filename);
-    slog("loaded obj from file");
+    //slog("loaded obj from file");
     if (!objData)
     {
         gf3d_mesh_delete(mesh);
@@ -150,7 +150,7 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
         return NULL;
     }
 
-    slog("data prim created");
+    //slog("data prim created");
 
     prim->objData = objData;
 
@@ -161,7 +161,7 @@ Mesh* gf3d_mesh_load_obj(const char* filename) {
         slog("failed to create prim buffers");
         return NULL;
     }
-    slog("prim buffers created");
+    //slog("prim buffers created");
 
     gfc_list_append(mesh->primitives, prim);
     gfc_line_cpy(mesh->filename, filename);
@@ -405,7 +405,7 @@ void gf3d_mesh_free(Mesh* mesh) {
 
 void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture) 
 {
-    slog("mesh queue render time");
+    //slog("mesh queue render time");
     MeshPrimitive* prim;
     if (!mesh || !pipe || !uboData || !texture)
     {
@@ -415,7 +415,7 @@ void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* 
 
     int count;
     count = gfc_list_count(mesh->primitives);
-    slog("count is %i", count);
+    //slog("count is %i", count);
     for (int i = 0; i < count; i++)
     {
         prim = gfc_list_nth(mesh->primitives, i);
@@ -424,10 +424,10 @@ void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* 
             slog("no prim");
             continue;
         }
-        slog("pipeline queue render time");
-        if (mesh->filename) slog("queueing mesh %s", mesh->filename);
-        slog("vertex count is %i", prim->objData->face_vert_count);
-        slog("face count is %i", prim->objData->face_count);
+        //slog("pipeline queue render time");
+        //if (mesh->filename) slog("queueing mesh %s", mesh->filename);
+        //slog("vertex count is %i", prim->objData->face_vert_count);
+        //slog("face count is %i", prim->objData->face_count);
         gf3d_pipeline_queue_render(pipe, prim->vertexBuffer, prim->vertexCount, prim->faceBuffer, uboData, texture);
     }
 }
